@@ -50,7 +50,7 @@ use Carp;
 	
 );
 
-$VERSION = "0.14";
+$VERSION = "0.15";
 
 1;
 
@@ -1231,8 +1231,8 @@ sub cidrvalidate {
 
 	foreach (@o)
 	{
-	    return if /^0./;
-	    return if $_ < 0 || $_ > 255;
+	    return undef if /^0./;
+	    return undef if $_ < 0 || $_ > 255;
 	}
 
 	if ($v =~ /^::ffff/)
@@ -1250,7 +1250,7 @@ sub cidrvalidate {
 
 	foreach (addr2cidr($n))
 	{
-	    return $v if $_ eq "$n/$suffix";
+	    return $_ if $_ eq "$n/$suffix";
 	}
 	return undef;
     }
@@ -1273,7 +1273,7 @@ sub cidrvalidate {
 
     foreach (addr2cidr($v))
     {
-	return $v if $_ eq "$v/$suffix";
+	return $_ if $_ eq "$v/$suffix";
     }
     return undef;
 }

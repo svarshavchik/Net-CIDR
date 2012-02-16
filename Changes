@@ -32,3 +32,7 @@ Revision history for Perl extension Net::CIDR.
 	either an IP address or a CIDR, either one. Reimplemented addr2cidr.
 	New implementation does not use Math::BigInt, much faster with ipv6
 	addresses.
+
+0.15 Thu Feb 16 08:09:45 EST 2012
+        - corrected cidrvalidate() to return values according to its
+        documentation, in some corner cases.
