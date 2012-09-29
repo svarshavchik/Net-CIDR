@@ -1,6 +1,6 @@
 # Net::CIDR
 #
-# Copyright 2001-2010 Sam Varshavchik.
+# Copyright 2001-2012 Sam Varshavchik.
 #
 # with contributions from David Cantrell.
 #
@@ -50,7 +50,7 @@ use Carp;
 	
 );
 
-$VERSION = "0.15";
+$VERSION = "0.16";
 
 1;
 
@@ -630,8 +630,8 @@ sub _range2cidr {
 
     return _range2cidr8($a, $b) if $#a < 0; # Least significant octet pair.
 
-    croak unless $a >= 0 && $a <= 255 && $a =~ /^[0-9]+$/;
-    croak unless $b >= 0 && $b <= 255 && $b =~ /^[0-9]+$/ && $b >= $a;
+    croak "Bad starting address\n" unless $a >= 0 && $a <= 255 && $a =~ /^[0-9]+$/;
+    croak "Bad ending address\n" unless $b >= 0 && $b <= 255 && $b =~ /^[0-9]+$/ && $b >= $a;
 
     my @c;
 
@@ -731,8 +731,8 @@ sub _range2cidr8 {
 	my $a=shift @r;
 	my $b=shift @r;
 
-	croak unless $a >= 0 && $a <= 255 && $a =~ /^[0-9]+$/;
-	croak unless $b >= 0 && $b <= 255 && $b =~ /^[0-9]+$/ && $b >= $a;
+	croak "Bad starting address\n" unless $a >= 0 && $a <= 255 && $a =~ /^[0-9]+$/;
+	croak "Bad ending address\n" unless $b >= 0 && $b <= 255 && $b =~ /^[0-9]+$/ && $b >= $a;
 
 	++$b;
 
@@ -775,8 +775,8 @@ sub _cidr2range8 {
 	my $a=shift @c;
 	my $b=shift @c;
 
-	croak unless $a >= 0 && $a <= 255 && $a =~ /^[0-9]+$/;
-	croak unless $b >= 0 && $b <= 8 && $b =~ /^[0-9]+$/;
+	croak "Bad starting address" unless $a >= 0 && $a <= 255 && $a =~ /^[0-9]+$/;
+	croak "Bad ending address" unless $b >= 0 && $b <= 8 && $b =~ /^[0-9]+$/;
 
 	my $n= 1 << (8-$b);
 
@@ -807,7 +807,7 @@ sub _ipcmp {
     my @a=split (/\./, $aa);
     my @b=split (/\./, $bb);
 
-    croak unless $#a == $#b;
+    croak "Different number of octets in IP addresses" unless $#a == $#b;
 
     while ($#a >= 0 && $a[0] == $b[0])
     {
@@ -859,7 +859,7 @@ sub cidr2octets {
 
 	$cidr =~ s/\s//g;
 
-	croak unless ($cidr =~ /(.*)\/(.*)/);
+	croak "CIDR doesn't look like a CIDR\n" unless ($cidr =~ /(.*)\/(.*)/);
 
 	my ($ip, $pfix)=($1, $2);
 
@@ -997,7 +997,7 @@ sub cidradd {
     my @b;
 
     grep {
-	croak unless /(.*)-(.*)/;
+	croak "This doesn't look like start-end\n" unless /(.*)-(.*)/;
 	push @a, $1;
 	push @b, $2;
     } @cidr;
@@ -1165,7 +1165,7 @@ sub cidrlookup {
     my @b;
 
     grep {
-	croak unless /(.*)-(.*)/;
+	croak "This doesn't look like start-end\n" unless /(.*)-(.*)/;
 	push @a, $1;
 	push @b, $2;
     } @cidr;
@@ -1192,6 +1192,10 @@ sub cidrlookup {
 Validate whether $ip is a valid IPv4 or IPv6 address, or a CIDR.
 Returns its argument or undef.
 Spaces are removed, and IPv6 hexadecimal address are converted to lowercase.
+
+$ip with less than four octets gets filled out with additional octets, and
+the modified value gets returned. This turns "192.168/16" into a proper
+"192.168.0.0/16".
 
 If $ip contains a "/", it must be a valid CIDR, otherwise it must be a valid
 IPv4 or an IPv6 address.
@@ -1226,6 +1230,13 @@ sub cidrvalidate {
 	return undef if $n =~ /^\./ || $n =~ /\.$/ || $n =~ /\.\./;
 
 	my @o= split(/\./, $n);
+
+	while ($#o < 3)
+	{
+	    push @o, "0";
+	}
+
+	$n=join(".", @o);
 
 	return undef if $#o != 3;
 
