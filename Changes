@@ -40,3 +40,6 @@ Revision history for Perl extension Net::CIDR.
 0.16 Sat Sep 29 09:29:43 EDT 2012
         - cidrvalidate() corrects octet-shortchanged IPv4 addresses to their
         proper size.
+
+0.17 Sat Oct 20 23:21:18 EDT 2012
+     	- version bump, put META back into the tarball.
