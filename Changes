@@ -43,3 +43,6 @@ Revision history for Perl extension Net::CIDR.
 
 0.17 Sat Oct 20 23:21:18 EDT 2012
      	- version bump, put META back into the tarball.
+
+0.18 Mon Feb  2 18:12:54 EST 2015
+        - leading 0s in IPv6 addresses are ok.

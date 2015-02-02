@@ -47,10 +47,10 @@ use Carp;
 		       ));
 
 @EXPORT = qw(
-	
+
 );
 
-$VERSION = "0.17";
+$VERSION = "0.18";
 
 1;
 
@@ -215,7 +215,7 @@ to a list of "start-finish" IP address ranges:
 
     @a=Net::CIDR::cidr2range("10.0.0.0/14", "192.68.0.0/24");
 
-The result is a two-element array: 
+The result is a two-element array:
 ("10.0.0.0-10.3.255.255", "192.68.0.0-192.68.0.255").
 
     @a=Net::CIDR::cidr2range("d08c:43::/32");
@@ -434,7 +434,7 @@ sub _iptoipa {
 
     return ($isipv6, @ips);
 }
-    
+
 sub _h62d {
     my $h=shift;
 
@@ -976,7 +976,7 @@ Example:
     @cidr_list=Net::CIDR::range2cidr("192.68.0.0-192.68.0.255");
     @cidr_list=Net::CIDR::cidradd("10.0.0.0/8", @cidr_list);
     @cidr_list=Net::CIDR::cidradd("192.68.1.0-192.68.1.255", @cidr_list);
-				  
+
 The result is a two-element array: ("10.0.0.0/8", "192.68.0.0/23").
 IPv6 addresses are handled in an analogous fashion.
 
@@ -1282,6 +1282,8 @@ sub cidrvalidate {
 
     $suffix=128 unless defined $suffix;
 
+    $v =~ s/([0-9A-Fa-f]+)/_triml0($1)/ge;
+
     foreach (addr2cidr($v))
     {
 	return $_ if $_ eq "$v/$suffix";
@@ -1289,6 +1291,12 @@ sub cidrvalidate {
     return undef;
 }
 
+sub _triml0 {
+    my ($a) = @_;
+
+    $a =~ s/^0+//g;
+    return $a
+}
 =pod
 
 =head1 BUGS
