@@ -46,3 +46,7 @@ Revision history for Perl extension Net::CIDR.
 
 0.18 Mon Feb  2 18:12:54 EST 2015
         - leading 0s in IPv6 addresses are ok.
+
+0.19
+	- Move test.pl to t/
+	- Update documentation to use only reserved IP addresses.
