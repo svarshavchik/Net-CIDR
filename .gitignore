@@ -1,0 +1,7 @@
+/MYMETA*
+/Makefile
+/Makefile.old
+/*.tar.gz
+/Net-CIDR.spec
+/blib
+/pm_to_blib

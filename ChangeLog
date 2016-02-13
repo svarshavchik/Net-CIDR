@@ -1,4 +1,12 @@
+2016-02-13  Sam Varshavchik  <mrsam@courier-mta.com>
+
+	* Move test.pl to t/
+	Update documentation to use only reserved IP addresses.
+
 Revision history for Perl extension Net::CIDR.
+
+
+Pre-git revision history:
 
 0.01  Mon Jun 25 01:37:53 2001
 	- original version; created by h2xs 1.20 with options
@@ -46,7 +54,3 @@ Revision history for Perl extension Net::CIDR.
 
 0.18 Mon Feb  2 18:12:54 EST 2015
         - leading 0s in IPv6 addresses are ok.
-
-0.19
-	- Move test.pl to t/
-	- Update documentation to use only reserved IP addresses.
