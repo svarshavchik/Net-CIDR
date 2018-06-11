@@ -6,7 +6,7 @@
 # Change 1..1 below to 1..last_test_to_print .
 # (It may become useful if the test is moved to ./t subdirectory.)
 
-BEGIN { $| = 1; print "1..10\n"; }
+BEGIN { $| = 1; print "1..11\n"; }
 END {print "not ok 1\n" unless $loaded;}
 use Net::CIDR;
 $loaded = 1;
@@ -122,4 +122,13 @@ if (Net::CIDR::cidrvalidate("1:1:000f:01:65:e:1111:eeee"))
 else
 {
     print "not ok 10\n";
+}
+
+if (Net::CIDR::cidrvalidate("fe80:0:120::/44"))
+{
+    print "ok 11\n";
+}
+else
+{
+    print "not ok 11\n";
 }

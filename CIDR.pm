@@ -1,6 +1,6 @@
 # Net::CIDR
 #
-# Copyright 2001-2012 Sam Varshavchik.
+# Copyright 2001-2018 Sam Varshavchik.
 #
 # with contributions from David Cantrell.
 #
@@ -50,7 +50,7 @@ use Carp;
 
 );
 
-$VERSION = "0.18";
+$VERSION = "0.19";
 
 1;
 
@@ -1295,8 +1295,10 @@ sub _triml0 {
     my ($a) = @_;
 
     $a =~ s/^0+//g;
+    $a = "0" if $a eq '';
     return $a
 }
+
 =pod
 
 =head1 BUGS

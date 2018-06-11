@@ -1,3 +1,9 @@
+0.19
+
+2018-06-11  Sam Varshavchik  <mrsam@courier-mta.com>
+
+	* Fix cidrvalidate() checking of IPv6 addresses with a 0 word.
+
 2016-02-13  Sam Varshavchik  <mrsam@courier-mta.com>
 
 	* Move test.pl to t/
