@@ -1,5 +1,5 @@
 #$Revision: 1.9 $
-do 'CIDR.pm';
+do './CIDR.pm';
 
 open (X, ">Net-CIDR.spec") || die "$!\n";
 
@@ -56,4 +56,3 @@ rm -rf $RPM_BUILD_ROOT
 
 * Tue Jun 26 2001 Mr. Sam <mrsam@courier-mta.com>
 - Initial build.
-
