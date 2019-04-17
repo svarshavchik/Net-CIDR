@@ -1,5 +1,5 @@
 #$Revision: 1.9 $
-do './CIDR.pm';
+do './lib/Net/CIDR.pm';
 
 open (X, ">Net-CIDR.spec") || die "$!\n";
 
@@ -14,13 +14,21 @@ __END__
 Summary: Net::CIDR Perl module
 Name: perl-Net-CIDR
 Version: @VERSION@
-Release: 1%(%{__perl} -e 'my $v=$^V; $v =~ s/(.)/".".ord($1)/ge;print "$v\n";')
+Release: 1.%{perl_version}%{?dist}
 Source0: Net-CIDR-%{version}.tar.gz
 License: Perl
 Group: Development/Languages
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildArch: noarch
-BuildPreReq: perl
+%define need_perl_generators %(if rpm -q fedora-release >/dev/null 2>/dev/null; then echo "1"; exit 0; fi; echo "1"; exit 1)
+
+%if %need_perl_generators
+BuildRequires: perl-interpreter
+BuildRequires: perl-generators
+%else
+BuildRequires: perl
+%endif
+Requires:       perl(:MODULE_COMPAT_%(eval "`perl -V:version`"; echo $version))
 
 %description
 The Net::CIDR perl module manipulates IPv4/IPv6 netblocks in CIDR notation
@@ -33,15 +41,16 @@ The Net::CIDR perl module manipulates IPv4/IPv6 netblocks in CIDR notation
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%{__make} install
+%{__make} pure_install
 find $RPM_BUILD_ROOT \( -name .packlist -o -name perllocal.pod \) -exec rm -f {} \;
+%{_fixperms} %{buildroot}/*
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%{_prefix}/lib/perl5/site_perl/*/Net
+%{perl_privlib}/Net
 %{_mandir}/man3/*
 
 %changelog

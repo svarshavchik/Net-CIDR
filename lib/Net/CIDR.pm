@@ -1,6 +1,6 @@
 # Net::CIDR
 #
-# Copyright 2001-2018 Sam Varshavchik.
+# Copyright 2001-2019 Sam Varshavchik.
 #
 # with contributions from David Cantrell.
 #
@@ -50,7 +50,7 @@ use Carp;
 
 );
 
-$VERSION = "0.19";
+$VERSION = "0.20";
 
 1;
 
@@ -798,14 +798,14 @@ sub _ipcmp {
     ($isipv6_1, $aa)=_ipv6to4($aa);
     ($isipv6_2, $bb)=_ipv6to4($bb);
 
-    if ($isipv6_1 || $isipv6_2)
-    {
-	croak "Invalid netblock: $aa-$bb"
-	    unless $isipv6_1 && $isipv6_2;
-    }
-
     my @a=split (/\./, $aa);
     my @b=split (/\./, $bb);
+
+    unshift @a, (0,0,0,0,0,0,0,0,0,0,255,255)
+	unless $isipv6_1;
+
+    unshift @b, (0,0,0,0,0,0,0,0,0,0,255,255)
+	unless $isipv6_2;
 
     croak "Different number of octets in IP addresses" unless $#a == $#b;
 
