@@ -133,6 +133,11 @@ else
     print "not ok 11\n";
 }
 
+print
+	+(Net::CIDR::cidrvalidate("2001:4860:4860:0:0:0:0:8888") ? '' : 'not ') . "ok 12\n";
+print
+	+(Net::CIDR::cidrvalidate("2001:4860:4860::8888") ? '' : 'not ') . "ok 13\n";
+
 my @only4 = qw(
     10.0.0.0/24
     10.0.1.0/24
@@ -153,11 +158,11 @@ if (join("",
     Net::CIDR::cidrlookup("10.0.10.1", @only4),
     Net::CIDR::cidrlookup("2001:db8::1", @only4)) eq "100")
 {
-    print "ok 12\n";
+    print "ok 14\n";
 }
 else
 {
-    print "not ok 12\n";
+    print "not ok 14\n";
 }
 
 if (join("",
@@ -165,11 +170,11 @@ if (join("",
     Net::CIDR::cidrlookup("2001:db8:a::1", @only6),
     Net::CIDR::cidrlookup("10.0.0.1", @only6)) eq "100")
 {
-    print "ok 13\n";
+    print "ok 15\n";
 }
 else
 {
-    print "not ok 13\n";
+    print "not ok 15\n";
 }
 
 if (join("",
@@ -178,9 +183,9 @@ if (join("",
     Net::CIDR::cidrlookup("2001:db8:2::1", @dualstack),
     Net::CIDR::cidrlookup("2001:db8:20::1", @dualstack)))
 {
-    print "ok 14\n";
+    print "ok 16\n";
 }
 else
 {
-    print "not ok 14\n";
+    print "not ok 16\n";
 }
