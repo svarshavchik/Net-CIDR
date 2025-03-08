@@ -1218,6 +1218,29 @@ undef.
 
 =cut
 
+sub _compress_ipv6 {
+    # taken from IPv6::Address on CPAN
+    my $str = shift;
+    return '::' if($str eq '0:0:0:0:0:0:0:0');
+    for(my $i=7;$i>1;$i--) {
+            my $zerostr = join(':',split('','0'x$i));
+            ###print "DEBUG: $str $zerostr \n";
+            if($str =~ /:$zerostr$/) {
+                    $str =~ s/:$zerostr$/::/;
+                    return $str;
+            }
+            elsif ($str =~ /:$zerostr:/) {
+                    $str =~ s/:$zerostr:/::/;
+                    return $str;
+            }
+            elsif ($str =~ /^$zerostr:/) {
+                    $str =~ s/^$zerostr:/::/;
+                    return $str;
+            }
+    }
+    return $str;
+}
+
 sub cidrvalidate {
     my $v=shift;
 
@@ -1297,9 +1320,10 @@ sub cidrvalidate {
 
     $v =~ s/([0-9A-Fa-f]+)/_triml0($1)/ge;
 
+	my $compressed = _compress_ipv6($v);
     foreach (addr2cidr($v))
     {
-	return $_ if $_ eq "$v/$suffix";
+	return $_ if $_ eq "$compressed/$suffix";
     }
     return undef;
 }
