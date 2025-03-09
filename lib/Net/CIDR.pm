@@ -50,7 +50,7 @@ use Carp;
 
 );
 
-$VERSION = "0.21";
+$VERSION = "0.21.1";
 
 1;
 
@@ -872,7 +872,7 @@ sub cidr2octets {
 
 	$cidr =~ s/\s//g;
 
-	croak "CIDR doesn't look like a CIDR\n" unless ($cidr =~ /(.*)\/(.*)/);
+	croak "CIDR \"$cidr\" doesn't look like a CIDR\n" unless ($cidr =~ /(.*)\/(.*)/);
 
 	my ($ip, $pfix)=($1, $2);
 
@@ -1010,7 +1010,7 @@ sub cidradd {
     my @b;
 
     grep {
-	croak "This doesn't look like start-end\n" unless /(.*)-(.*)/;
+	croak "Range $_ doesn't look like start-end\n" unless /(.*)-(.*)/;
 	push @a, $1;
 	push @b, $2;
     } @cidr;
@@ -1178,7 +1178,7 @@ sub cidrlookup {
     my @b;
 
     grep {
-	croak "This doesn't look like start-end\n" unless /(.*)-(.*)/;
+	croak "Range $_ doesn't look like start-end\n" unless /(.*)-(.*)/;
 	push @a, $1;
 	push @b, $2;
     } @cidr;
