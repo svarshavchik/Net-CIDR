@@ -1,6 +1,6 @@
 # Net::CIDR
 #
-# Copyright 2001-2021 Sam Varshavchik.
+# Copyright 2001-2025 Sam Varshavchik.
 #
 # with contributions from David Cantrell.
 #
@@ -50,7 +50,7 @@ use Carp;
 
 );
 
-$VERSION = "0.21.1";
+$VERSION = "0.22";
 
 1;
 
