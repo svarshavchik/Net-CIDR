@@ -50,7 +50,7 @@ use Carp;
 
 );
 
-$VERSION = "0.24.1";
+$VERSION = "0.25";
 
 1;
 
@@ -536,7 +536,7 @@ sub addr2cidr {
 	    $n &= 0xF8;
 	}
 
-	my $s=join(".", map { s/\A0+([0-9])/\1/; $_ } @ipcpy);
+	my $s=join(".", map { s/\A0+([0-9])/$1/; $_ } @ipcpy);
 
 	push @blocks, ($isipv6 ? _ipv4to6($s):$s) . "/$bits";
     }
